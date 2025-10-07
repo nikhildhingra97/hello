@@ -146,4 +146,17 @@ The `/app` package contains a lightweight, in-memory implementation of a control
 pytest
 ```
 
+### Single-File (Colab-Friendly) Script
+If you prefer to work inside Google Colab or want a consolidated script, use `control_tower_colab.py`. The file contains the domain models, in-memory data store, business services, sample data, and FastAPI endpoints in one place.
+
+```bash
+# Print demo analytics directly in the notebook / terminal
+python control_tower_colab.py
+
+# Or start the FastAPI server from the single file
+python control_tower_colab.py --serve --host 0.0.0.0 --port 8000
+```
+
+The `--serve` option mirrors the multi-module API, while running without arguments prints the snapshot, SKU health, and inbound visibility tables to stdout—handy for quick validation in notebook environments.
+
 The prototype is intentionally simple—extend the service layer, replace the in-memory data store with database integrations, and wire the API to a front-end dashboard or alerting system to evolve it into a production-ready control tower.
