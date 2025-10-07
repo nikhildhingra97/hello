@@ -1,6 +1,6 @@
-# Supply Chain Control Tower Blueprint
+# Supply Chain Control Tower Blueprint & Prototype
 
-This repository captures a business and technical blueprint for building an inventory-focused control tower. It documents the vision, capabilities, architecture, data flows, and implementation roadmap required to provide end-to-end visibility across the supply chain.
+This repository combines a blueprint for building an inventory-focused control tower with a runnable FastAPI prototype that demonstrates key concepts such as unified visibility, risk detection, and inbound order tracking.
 
 ## 1. Vision and Objectives
 - **Unified Visibility**: Deliver a single source of truth for on-hand, in-transit, and planned inventory across plants, warehouses, suppliers, and retail channels.
@@ -113,4 +113,37 @@ This repository captures a business and technical blueprint for building an inve
 - Define infrastructure budget and vendor selection criteria.
 
 ---
-For more detailed solution design, extend this repository with architecture diagrams, data models, and backlog items tailored to your organization's systems.
+
+## 9. FastAPI Prototype
+The `/app` package contains a lightweight, in-memory implementation of a control tower API:
+
+- `models.py` defines domain entities (inventory items, demand signals, replenishment orders) and a snapshot schema.
+- `data_store.py` manages in-memory persistence and aggregated metrics.
+- `services.py` applies business logic to compute SKU health, shortfalls, and inbound visibility.
+- `sample_data.py` loads representative sample data used by the API and tests.
+- `api.py` exposes REST endpoints via FastAPI for snapshots, SKU health, and inbound orders.
+- `main.py` runs the application with Uvicorn.
+
+### Getting Started
+1. **Install dependencies**
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate
+   pip install -r requirements.txt
+   ```
+2. **Run the API**
+   ```bash
+   uvicorn app.api:app --reload
+   ```
+3. **Explore endpoints**
+   - `GET /snapshot` – aggregated inventory totals and top risk SKUs.
+   - `GET /sku-health` – per-location health metrics (shortfall, coverage days, safety stock).
+   - `GET /inbound` – inbound purchase orders with shortfall coverage indicator.
+   - Interactive docs available at `http://localhost:8000/docs` when the server is running.
+
+### Running Tests
+```bash
+pytest
+```
+
+The prototype is intentionally simple—extend the service layer, replace the in-memory data store with database integrations, and wire the API to a front-end dashboard or alerting system to evolve it into a production-ready control tower.
